@@ -4,11 +4,15 @@ import br.com.conectaplantao.api.usuario.domain.model.Hospital;
 import br.com.conectaplantao.api.usuario.domain.model.Medico;
 import br.com.conectaplantao.api.usuario.domain.model.Usuario;
 import br.com.conectaplantao.api.usuario.domain.ports.UsuarioRepositoryPort;
+import br.com.conectaplantao.api.usuario.infrastructure.persistence.entity.HospitalPersistenceEntity;
+import br.com.conectaplantao.api.usuario.infrastructure.persistence.entity.MedicoPersistenceEntity;
 import br.com.conectaplantao.api.usuario.infrastructure.persistence.repository.SpringDataUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -33,24 +37,46 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
         return springDataRepository.findById(id).map(this::toDomain);
     }
 
+    @Override
+    public List<Usuario> findAll() {
+        return springDataRepository.findAll()
+                .stream()
+                .map(this::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        springDataRepository.deleteById(id);
+    }
+
 
     private UsuarioPersistenceEntity toEntity(Usuario usuario) {
-        UsuarioPersistenceEntity entity = new UsuarioPersistenceEntity();
-        entity.setId(usuario.getId());
-        entity.setEmail(usuario.getEmail());
-        entity.setSenha(usuario.getSenha());
-        entity.setAtivo(usuario.getAtivo());
-
         if (usuario instanceof Medico medico) {
+            MedicoPersistenceEntity entity = new MedicoPersistenceEntity();
+            entity.setId(medico.getId());
+            entity.setEmail(medico.getEmail());
+            entity.setSenha(medico.getSenha());
+            entity.setAtivo(medico.getAtivo());
             entity.setNome(medico.getNome());
             entity.setCrm(medico.getCrm());
             entity.setEspecialidade(medico.getEspecialidade());
+            return entity;
+
         } else if (usuario instanceof Hospital hospital) {
+            HospitalPersistenceEntity entity = new HospitalPersistenceEntity();
+            entity.setId(hospital.getId());
+            entity.setEmail(hospital.getEmail());
+            entity.setSenha(hospital.getSenha());
+            entity.setAtivo(hospital.getAtivo());
             entity.setNomeFantasia(hospital.getNomeFantasia());
             entity.setRazaoSocial(hospital.getRazaoSocial());
             entity.setCnpj(hospital.getCnpj());
+            return entity;
+
+        } else {
+            throw new IllegalArgumentException("Tipo de usuário desconhecido para mapeamento de entidade: " + usuario.getClass().getName());
         }
-        return entity;
     }
 
 

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioPersistenceEntity {
+public abstract class UsuarioPersistenceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

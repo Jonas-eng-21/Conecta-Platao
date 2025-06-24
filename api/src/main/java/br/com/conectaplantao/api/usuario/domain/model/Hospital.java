@@ -14,7 +14,14 @@ public class Hospital extends Usuario {
     private String razaoSocial;
     private String cnpj;
 
-    public Hospital(Long id, String nomeFantasia, String senha, String email, String razaoSocial, String cnpj, Boolean ativo) {
+    public Hospital(String email, String senha, String nomeFantasia, String razaoSocial, String cnpj) {
+        super(email, senha, TipoUsuario.HOSPITAL, true);
+        this.nomeFantasia = nomeFantasia;
+        this.razaoSocial = razaoSocial;
+        this.cnpj = cnpj;
+    }
+
+    public Hospital(Long id, String email, String senha, String nomeFantasia, String razaoSocial, String cnpj, Boolean ativo) {
         super(id, email, senha, TipoUsuario.HOSPITAL, ativo);
         this.nomeFantasia = nomeFantasia;
         this.razaoSocial = razaoSocial;

@@ -14,6 +14,13 @@ public class Medico extends Usuario {
     private String crm;
     private String especialidade;
 
+    public Medico(String email, String senha, String nome, String crm, String especialidade) {
+        super(email, senha, TipoUsuario.MEDICO, true);
+        this.nome = nome;
+        this.crm = crm;
+        this.especialidade = especialidade;
+    }
+
     public Medico(Long id, String email, String senha, String nome, String crm, String especialidade, Boolean ativo) {
         super(id, email, senha, TipoUsuario.MEDICO, ativo);
         this.nome = nome;

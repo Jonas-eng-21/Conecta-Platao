@@ -18,5 +18,12 @@ public abstract class Usuario {
     private TipoUsuario tipoUsuario;
     private Boolean ativo = true;
 
+    protected Usuario(String email, String senha, TipoUsuario tipoUsuario, Boolean ativo) {
+        this.email = email;
+        this.senha = senha;
+        this.tipoUsuario = tipoUsuario;
+        this.ativo = ativo;
+    }
+
 
 }
